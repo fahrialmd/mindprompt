@@ -83,7 +83,7 @@ button {
 }
 
 button.btn-example {
-	font-size: 20px;
+	font-size: 18px;
 	width: calc(100% - calc(4 * 0.3rem));
 	text-align: left;
 	padding: 16px;
