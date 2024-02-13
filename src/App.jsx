@@ -1,101 +1,64 @@
-import React, { useState } from "react";
-import rocketIcon from "./assets/rocket.svg";
-import placeholderImage from "./assets/placeholder-image.png";
+import React, { useState, useEffect } from "react";
 import "./App.css";
-
-function ButtonTextBox({ exampleValue, setExampleValue, handleButtonClick }) {
-	return (
-		<div className="card-group">
-			<h2>
-				<img src={rocketIcon} className="icon" alt="Rocket Icon" />
-				Examples:
-			</h2>
-			<button onClick={() => handleButtonClick("Button 1")}>Button 1</button>
-			<br />
-			<button onClick={() => handleButtonClick("Button 2")}>Button 2</button>
-			<br />
-			<button onClick={() => handleButtonClick("Button 3")}>Button 3</button>
-			<br />
-			<input
-				type="text"
-				value={exampleValue}
-				onChange={(e) => setExampleValue(e.target.value)}
-				placeholder="Text Box"
-			/>
-		</div>
-	);
-}
-
-function PromptInput({
-	promptInput,
-	setPromptInput,
-	exampleValue,
-	setExampleValue,
-}) {
-	exampleValue ? (promptInput = exampleValue) : "";
-	const handleInputChange = (event) => {
-		setPromptInput(event.target.value);
-	};
-
-	const handleFormSubmit = (event) => {
-		event.preventDefault();
-		console.log("Form submitted with value:", promptInput);
-		// Handle form submission logic here
-	};
-
-	const handleFormReset = () => {
-		setPromptInput(""); // Reset the input field
-		setExampleValue("");
-	};
-
-	return (
-		<div className="card-group">
-			<h2>
-				<img src={rocketIcon} className="icon" alt="Rocket Icon" />
-				Enter Prompt:
-			</h2>
-			<form className="form-group" onSubmit={handleFormSubmit}>
-				<label htmlFor="promptInput"></label>
-				<input
-					type="text"
-					className={promptInput ? "form-prompt has-value" : "form-prompt"}
-					id="promptInput"
-					name="promptInput"
-					value={promptInput}
-					onChange={handleInputChange}
-				/>
-				<span className="form-label">prompt here</span>
-				<button type="submit">Send</button>
-				<button type="reset" onClick={handleFormReset}>
-					Reset
-				</button>
-			</form>
-		</div>
-	);
-}
-
-function ImageComponent() {
-	const handleImageError = (e) => {
-		const target = e.target;
-		target.onerror = null;
-		target.src = placeholderImage;
-	};
-
-	return (
-		<img
-			src="./assets/image.jpg"
-			alt="Description of the image"
-			onError={handleImageError}
-		/>
-	);
-}
+import { PromptInput } from "./components/PromptInput";
+import { OutputImage } from "./components/OutputImage";
+import { ExamplePrompt } from "./components/ExamplePrompt";
+import placeholderImage from "./assets/placeholder-image.png";
 
 function App() {
 	const [exampleValue, setExampleValue] = useState("");
 	const [promptInput, setPromptInput] = useState("");
+	const [imageUrl, setImageUrl] = useState("");
+	const [loading, setLoading] = useState(false);
+	const [error, setError] = useState(null);
+	const [elapsedTime, setElapsedTime] = useState(0);
 
-	const handleButtonClick = (title) => {
-		setExampleValue(title);
+	useEffect(() => {
+		let timer;
+		if (loading) {
+			timer = setInterval(() => {
+				setElapsedTime((prevTime) => prevTime + 1);
+			}, 1000);
+		} else {
+			setElapsedTime(0);
+		}
+		return () => clearInterval(timer);
+	}, [loading]);
+
+	async function query(data) {
+		try {
+			setLoading(true);
+			const response = await fetch(
+				"https://api-inference.huggingface.co/models/segmind/SSD-1B",
+				{
+					headers: {
+						Authorization: "Bearer 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",
+					},
+					method: "POST",
+					body: JSON.stringify(data),
+				}
+			);
+			const result = await response.blob();
+			setLoading(false);
+			return result;
+		} catch (error) {
+			setLoading(false);
+			setError(error);
+		}
+	}
+
+	const handleQuery = async (userValue) => {
+		try {
+			const imageData = await query({ inputs: userValue });
+			const imageUrl = URL.createObjectURL(imageData);
+			setImageUrl(imageUrl);
+		} catch (error) {
+			console.error("Error while fetching data:", error);
+		}
+	};
+
+	const handleButtonClick = (value) => {
+		setExampleValue(value);
 	};
 
 	return (
@@ -108,17 +71,23 @@ function App() {
 						setPromptInput={setPromptInput}
 						exampleValue={exampleValue}
 						setExampleValue={setExampleValue}
+						handleQuery={handleQuery}
 					/>
-					<ButtonTextBox
-						exampleValue={exampleValue}
-						setexampleValue={setExampleValue}
-						handleButtonClick={handleButtonClick}
-					/>
+					<ExamplePrompt handleButtonClick={handleButtonClick} />
 				</div>
 				<div className="right-side">
-					<div>
+					<div
+						className="card-group"
+						style={{
+							textAlign: "center",
+						}}
+					>
 						<h2>Your Result:</h2>
-						<ImageComponent />
+						<OutputImage
+							imageUrl={imageUrl}
+							placeholderImage={placeholderImage}
+						/>
+						<p>Elapsed Time: {elapsedTime} seconds</p>
 					</div>
 				</div>
 			</div>

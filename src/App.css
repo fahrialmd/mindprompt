@@ -9,7 +9,7 @@
 
 .card-group {
 	background: var(--color-background);
-	padding: calc(4 * 0.5rem);
+	padding: calc(4 * 0.3rem);
 	margin: calc(4 * 0.3rem);
 	border-radius: var(--radius);
 	border: var(--border-prop);
@@ -43,23 +43,24 @@
 		background: transparent;
 		border-radius: var(--radius);
 		outline: none;
+		resize: none;
 	}
 	.form-label {
 		position: absolute;
 		left: 0;
 		top: 0;
-		padding: calc(var(--size-bezel) * 0.75) calc(var(--size-bezel) * 0.5);
-		margin: 21px 10px 10px 10px;
+		margin: 38px 10px 10px 10px;
 		transform: translate(0, 0);
 		transform-origin: 0 0;
 		background: transparent;
 		transition: transform 120ms ease-in;
 		font-weight: bold;
+		font-size: 18px;
 		pointer-events: none;
 	}
 	.form-prompt.has-value + .form-label,
 	.form-prompt:focus + .form-label {
-		transform: translate(0.6rem, -80%) scale(1);
+		transform: translate(0.9rem, -170%) scale(1);
 		color: var(--color-accent);
 		background-color: var(--color-background);
 	}
@@ -81,6 +82,13 @@ button {
 	}
 }
 
+button.btn-example {
+	font-size: 20px;
+	width: calc(100% - calc(4 * 0.3rem));
+	text-align: left;
+	padding: 16px;
+}
+
 button + button {
 	margin-left: calc(var(--size-bezel) * 2);
 }
@@ -92,13 +100,5 @@ button + button {
 .left-side,
 .right-side {
 	width: 50%;
-	height: 80vh;
-	padding: 20px;
-}
-
-.right-side {
-	display: flex;
-	justify-content: center;
-	align-items: center;
-	text-align: center;
+	height: 70vh;
 }
