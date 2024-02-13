@@ -1,0 +1,104 @@
+:root {
+	--radius: 5px;
+	--size-bezel: 0.5rem;
+	--color-background: #f7b834;
+	--color-border: #402e32;
+	--color-accent: #ffedcb;
+	--border-prop: 3px solid var(--color-border);
+}
+
+.card-group {
+	background: var(--color-background);
+	padding: calc(4 * 0.5rem);
+	margin: calc(4 * 0.3rem);
+	border-radius: var(--radius);
+	border: var(--border-prop);
+	box-shadow: 0.5rem 0.5rem 0 var(--color-border);
+}
+
+.card-group > * {
+	margin: 12px;
+}
+
+.form-group > * {
+	margin-block: 12px;
+}
+
+.icon {
+	width: 0.8em;
+	height: 0.8em;
+	margin-right: 0.4em;
+}
+
+.form-group {
+	position: relative;
+	.form-prompt {
+		box-sizing: border-box;
+		width: 100%;
+		border: var(--border-prop);
+		padding: calc(0.5rem * 1.5) 0.5rem;
+		color: var(--color-border);
+		font-size: 18px;
+		font-weight: 700;
+		background: transparent;
+		border-radius: var(--radius);
+		outline: none;
+	}
+	.form-label {
+		position: absolute;
+		left: 0;
+		top: 0;
+		padding: calc(var(--size-bezel) * 0.75) calc(var(--size-bezel) * 0.5);
+		margin: 21px 10px 10px 10px;
+		transform: translate(0, 0);
+		transform-origin: 0 0;
+		background: transparent;
+		transition: transform 120ms ease-in;
+		font-weight: bold;
+		pointer-events: none;
+	}
+	.form-prompt.has-value + .form-label,
+	.form-prompt:focus + .form-label {
+		transform: translate(0.6rem, -80%) scale(1);
+		color: var(--color-accent);
+		background-color: var(--color-background);
+	}
+}
+
+button {
+	cursor: pointer;
+	color: currentColor;
+	padding: var(--size-bezel) calc(var(--size-bezel) * 2);
+	background: var(--color-accent);
+	border: var(--border-prop);
+	border-radius: var(--radius);
+	font-weight: 900;
+	font-size: 15px;
+
+	&[type="reset"] {
+		background: var(--color-background);
+		border: var(--border-prop);
+	}
+}
+
+button + button {
+	margin-left: calc(var(--size-bezel) * 2);
+}
+
+.container {
+	display: flex;
+}
+
+.left-side,
+.right-side {
+	width: 50%;
+	height: 80vh;
+	padding: 20px;
+}
+
+.right-side {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	text-align: center;
+}
