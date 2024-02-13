@@ -17,4 +17,5 @@ function getUniqueArray(min, max, count) {
 	return Array.from(uniqueNumbers);
 }
 
-export const exampleIndexes = getUniqueArray(0, 9, 3);
+export const exampleIndexes = getUniqueArray(0, 99, 3);
+console.log(exampleIndexes);

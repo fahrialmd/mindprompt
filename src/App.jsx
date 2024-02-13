@@ -32,7 +32,7 @@ function App() {
 				"https://api-inference.huggingface.co/models/segmind/SSD-1B",
 				{
 					headers: {
-						Authorization: "Bearer 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",
+						Authorization: "Bearer a",
 					},
 					method: "POST",
 					body: JSON.stringify(data),
