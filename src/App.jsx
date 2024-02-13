@@ -64,6 +64,9 @@ function App() {
 	return (
 		<>
 			<h1>Mindprompt.</h1>
+			<p style={{ textAlign: "center", fontSize: "20px" }}>
+				Visualize your mind
+			</p>
 			<div className="container">
 				<div className="left-side">
 					<PromptInput
