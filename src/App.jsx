@@ -6,6 +6,7 @@ import { ExamplePrompt } from "./components/ExamplePrompt";
 import placeholderImage from "./assets/placeholder-image.png";
 
 function App() {
+	const API_KEY = import.meta.env.VITE_API_KEY;
 	const [exampleValue, setExampleValue] = useState("");
 	const [promptInput, setPromptInput] = useState("");
 	const [imageUrl, setImageUrl] = useState("");
@@ -32,7 +33,7 @@ function App() {
 				"https://api-inference.huggingface.co/models/segmind/SSD-1B",
 				{
 					headers: {
-						Authorization: "Bearer a",
+						Authorization: API_KEY,
 					},
 					method: "POST",
 					body: JSON.stringify(data),
